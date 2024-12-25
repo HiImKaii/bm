@@ -18,6 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "aes.h"
+#include "aes.c"
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -58,6 +63,15 @@ static void MX_SUBGHZ_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void print_hex(const uint8_t *data, size_t len) {
+    for (size_t i = 0; i < len; ++i) {
+        printf("%02x", data[i]);
+        if ((i + 1) % 16 == 0) printf("\n");
+        else printf(" ");
+    }
+    printf("\n");
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -68,6 +82,53 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+
+	AES_Context ctx;
+
+	    // Example 256-bit key
+	    uint8_t key[AES_KEY_SIZE] = {
+	        0x60, 0x3d, 0xeb, 0x10, 0x15, 0xca, 0x71, 0xbe,
+	        0x2b, 0x73, 0xae, 0xf0, 0x85, 0x7d, 0x77, 0x81,
+	        0x1f, 0x35, 0x2c, 0x07, 0x3b, 0x61, 0x08, 0xd7,
+	        0x2d, 0x98, 0x10, 0xa3, 0x09, 0x14, 0xdf, 0xf4
+	    };
+
+	    // Example plaintext block (16 bytes)
+	    uint8_t plaintext[AES_BLOCK_SIZE] = {
+	        0x32, 0x43, 0xf6, 0xa8, 0x88, 0x5a, 0x30, 0x8d,
+	        0x31, 0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34
+	    };
+
+	    uint8_t ciphertext[AES_BLOCK_SIZE];
+	    uint8_t decryptedtext[AES_BLOCK_SIZE];
+
+	    printf("Original plaintext:\n");
+	    print_hex(plaintext, AES_BLOCK_SIZE);
+
+	    // Initialize AES context with the key
+	    AES_Init(&ctx, key);
+
+	    // Encrypt the plaintext
+	    AES_Encrypt(&ctx, plaintext, ciphertext);
+
+	    printf("Ciphertext:\n");
+	    print_hex(ciphertext, AES_BLOCK_SIZE);
+
+	    // Decrypt the ciphertext
+	    AES_Decrypt(&ctx, ciphertext, decryptedtext);
+
+	    printf("Decrypted plaintext:\n");
+	    print_hex(decryptedtext, AES_BLOCK_SIZE);
+
+	    // Verify correctness
+	    if (memcmp(plaintext, decryptedtext, AES_BLOCK_SIZE) == 0) {
+	        printf("Decryption successful, plaintext matches!\n");
+	    } else {
+	        printf("Decryption failed, plaintext does not match!\n");
+	    }
+
+	    return 0;
+
 
   /* USER CODE END 1 */
 
