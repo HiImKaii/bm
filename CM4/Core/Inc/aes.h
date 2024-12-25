@@ -8,9 +8,9 @@
 #define AES_KEY_SIZE 32    // Kích thước khoá; 128-bit key
 #define AES_ROUND_KEY_SIZE 240
 
-void InvShiftRows(uint8_t state[4][4]);
-void InvSubBytes(uint8_t state[4][4]);
-void InvMixColumns(uint8_t state[4][4]);
+//void InvShiftRows(uint8_t state[4][4]);
+//void InvSubBytes(uint8_t state[4][4]);
+//void InvMixColumns(uint8_t state[4][4]);
 
 
 typedef struct {
@@ -27,7 +27,7 @@ void AES_Encrypt(AES_Context *ctx, uint8_t *input, uint8_t *output);
 void AES_Decrypt(AES_Context *ctx, uint8_t *input, uint8_t *output);
 
 
-void getInputFromKeyboard(uint8_t *buffer, size_t size);
-void printHex(const uint8_t *data, size_t size);
+//void getInputFromKeyboard(uint8_t *buffer, size_t size);
+//void printHex(const uint8_t *data, size_t size);
 
 #endif
