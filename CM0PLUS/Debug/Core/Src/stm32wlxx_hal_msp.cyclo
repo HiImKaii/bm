@@ -1,0 +1,5 @@
+C:/Users/VU XUAN QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_bus.h:2429:22:LL_C2_APB3_GRP1_EnableClock	1
+C:/Users/VU XUAN QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_bus.h:2457:22:LL_C2_APB3_GRP1_DisableClock	1
+../Core/Src/stm32wlxx_hal_msp.c:64:6:HAL_MspInit	1
+../Core/Src/stm32wlxx_hal_msp.c:84:6:HAL_SUBGHZ_MspInit	1
+../Core/Src/stm32wlxx_hal_msp.c:103:6:HAL_SUBGHZ_MspDeInit	1
