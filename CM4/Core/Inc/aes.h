@@ -4,8 +4,8 @@
 #include <stdint.h>
 
 #define AES_BLOCK_SIZE 16  // Khối dữ liệu đầu ra/vào; 16 bytes = 128 bits
-#define AES_KEY_SIZE 32    // Kích thước khoá; 128-bit key
-#define AES_ROUND_KEY_SIZE 240
+#define AES_KEY_SIZE 16    // Kích thước khoá; 128-bit key
+#define AES_ROUND_KEY_SIZE 176
 
 //void InvShiftRows(uint8_t state[4][4]);
 //void InvSubBytes(uint8_t state[4][4]);

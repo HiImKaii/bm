@@ -52,36 +52,36 @@ static const uint8_t rsbox[256] = {
 };
 
 
-static const uint8_t Rcon[15] = {
-    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36,
-    0x6C, 0xD8, 0xAB, 0x4D, 0x9A
+static const uint8_t Rcon[11] = {
+		0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36
 };
 
 
+// Key expansion
 static void KeyExpansion(const uint8_t *key, uint8_t *RoundKey) {
     uint32_t i;
     uint8_t temp[4];
 
-    for (i = 0; i < 8; ++i) {
+    for (i = 0; i < 4; ++i) {
         RoundKey[i * 4 + 0] = key[i * 4 + 0];
         RoundKey[i * 4 + 1] = key[i * 4 + 1];
         RoundKey[i * 4 + 2] = key[i * 4 + 2];
         RoundKey[i * 4 + 3] = key[i * 4 + 3];
     }
 
-    for (i = 8; i < 60; ++i) {
+    for (i = 4; i < 44; ++i) {
         temp[0] = RoundKey[(i - 1) * 4 + 0];
         temp[1] = RoundKey[(i - 1) * 4 + 1];
         temp[2] = RoundKey[(i - 1) * 4 + 2];
         temp[3] = RoundKey[(i - 1) * 4 + 3];
 
-        if (i % 8 == 0) {
+        if (i % 4 == 0) {
             uint8_t t = temp[0];
             temp[0] = sbox[temp[1]] ^ Rcon[i / 8];
             temp[1] = sbox[temp[2]];
             temp[2] = sbox[temp[3]];
             temp[3] = sbox[t];
-        } else if (i % 8 == 4) {
+        } else if (i % 4 == 3) {
             temp[0] = sbox[temp[0]];
             temp[1] = sbox[temp[1]];
             temp[2] = sbox[temp[2]];
@@ -95,24 +95,28 @@ static void KeyExpansion(const uint8_t *key, uint8_t *RoundKey) {
     }
 }
 
+// AddRoundKey
 static void AddRoundKey(uint8_t *state, const uint8_t *RoundKey) {
     for (int i = 0; i < AES_BLOCK_SIZE; ++i) {
         state[i] ^= RoundKey[i];
     }
 }
 
+// SubBytes
 static void SubBytes(uint8_t *state) {
     for (int i = 0; i < AES_BLOCK_SIZE; ++i) {
         state[i] = sbox[state[i]];
     }
 }
 
+// InvSubBytes
 static void InvSubBytes(uint8_t *state) {
     for (int i = 0; i < AES_BLOCK_SIZE; ++i) {
         state[i] = rsbox[state[i]];
     }
 }
 
+// ShiftRows
 static void ShiftRows(uint8_t *state) {
     uint8_t temp;
 
@@ -139,6 +143,7 @@ static void ShiftRows(uint8_t *state) {
     state[7] = temp;
 }
 
+// InvShiftRows
 static void InvShiftRows(uint8_t *state) {
     uint8_t temp;
 
@@ -165,6 +170,7 @@ static void InvShiftRows(uint8_t *state) {
     state[15] = temp;
 }
 
+// MixColumns
 static void MixColumns(uint8_t *state) {
     // Implementation of MixColumns step
     for (int i = 0; i < 4; ++i) {
@@ -177,6 +183,7 @@ static void MixColumns(uint8_t *state) {
     }
 }
 
+// InvMixColumns
 static void InvMixColumns(uint8_t *state) {
     // Implementation of inverse MixColumns step
     for (int i = 0; i < 4; ++i) {
@@ -189,17 +196,19 @@ static void InvMixColumns(uint8_t *state) {
     }
 }
 
+// Initialization
 void AES_Init(AES_Context *ctx, const uint8_t *key) {
     KeyExpansion(key, ctx->RoundKey);
 }
 
+// AES Encryption
 void AES_Encrypt(AES_Context *ctx, uint8_t *input, uint8_t *output) {
     uint8_t state[AES_BLOCK_SIZE];
     memcpy(state, input, AES_BLOCK_SIZE);
 
     AddRoundKey(state, ctx->RoundKey);
 
-    for (int round = 1; round < 14; ++round) {
+    for (int round = 1; round < 10; ++round) {
         SubBytes(state);
         ShiftRows(state);
         MixColumns(state);
@@ -208,18 +217,19 @@ void AES_Encrypt(AES_Context *ctx, uint8_t *input, uint8_t *output) {
 
     SubBytes(state);
     ShiftRows(state);
-    AddRoundKey(state, ctx->RoundKey + 14 * AES_BLOCK_SIZE);
+    AddRoundKey(state, ctx->RoundKey + 10 * AES_BLOCK_SIZE);
 
     memcpy(output, state, AES_BLOCK_SIZE);
 }
 
+// AES Decryption
 void AES_Decrypt(AES_Context *ctx, uint8_t *input, uint8_t *output) {
     uint8_t state[AES_BLOCK_SIZE];
     memcpy(state, input, AES_BLOCK_SIZE);
 
-    AddRoundKey(state, ctx->RoundKey + 14 * AES_BLOCK_SIZE);
+    AddRoundKey(state, ctx->RoundKey + 10 * AES_BLOCK_SIZE);
 
-    for (int round = 13; round > 0; --round) {
+    for (int round = 9; round > 0; --round) {
         InvShiftRows(state);
         InvSubBytes(state);
         AddRoundKey(state, ctx->RoundKey + round * AES_BLOCK_SIZE);
