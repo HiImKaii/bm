@@ -36,7 +36,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  C:/Users/VU\ XUAN\ QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_system.h \
  C:/Users/VU\ XUAN\ QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo.h \
  C:/Users/VU\ XUAN\ QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo_errno.h \
- ../Core/Inc/stm32wlxx_nucleo_conf.h
+ ../Core/Inc/stm32wlxx_nucleo_conf.h ../Core/Inc/aes.h
 ../Core/Inc/main.h:
 C:/Users/VU\ XUAN\ QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_hal.h:
 ../Core/Inc/stm32wlxx_hal_conf.h:
@@ -76,3 +76,4 @@ C:/Users/VU\ XUAN\ QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/STM3
 C:/Users/VU\ XUAN\ QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo.h:
 C:/Users/VU\ XUAN\ QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo_errno.h:
 ../Core/Inc/stm32wlxx_nucleo_conf.h:
+../Core/Inc/aes.h:

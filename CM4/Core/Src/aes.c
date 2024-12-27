@@ -59,7 +59,7 @@ static const uint8_t Rcon[15] = {
 
 
 static void KeyExpansion(const uint8_t *key, uint8_t *RoundKey) {
-    uint32_t i, j, k;
+    uint32_t i;
     uint8_t temp[4];
 
     for (i = 0; i < 8; ++i) {
@@ -231,4 +231,13 @@ void AES_Decrypt(AES_Context *ctx, uint8_t *input, uint8_t *output) {
     AddRoundKey(state, ctx->RoundKey);
 
     memcpy(output, state, AES_BLOCK_SIZE);
+}
+
+void print_hex(const uint8_t *data, size_t len) {
+    for (size_t i = 0; i < len; ++i) {
+        printf("%02x", data[i]);
+        if ((i + 1) % 16 == 0) printf("\n");
+        else printf(" ");
+    }
+    printf("\n");
 }

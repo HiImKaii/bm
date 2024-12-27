@@ -1,4 +1,5 @@
 /* USER CODE BEGIN Header */
+// main c for bm prj.
 /**
   ******************************************************************************
   * @file           : main.c
@@ -18,6 +19,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "aes.h"
+#include <stdio.h>
+#include <string.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -59,14 +63,6 @@ static void MX_USART2_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void print_hex(const uint8_t *data, size_t len) {
-    for (size_t i = 0; i < len; ++i) {
-        printf("%02x", data[i]);
-        if ((i + 1) % 16 == 0) printf("\n");
-        else printf(" ");
-    }
-    printf("\n");
-}
 
 /* USER CODE END 0 */
 
@@ -79,47 +75,50 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 
-	AES_Context ctx;
+    AES_Context ctx;
 
-	    // Example 256-bit key
-	    uint8_t key[AES_KEY_SIZE] = {
-	        0x60, 0x3d, 0xeb, 0x10, 0x15, 0xca, 0x71, 0xbe,
-	        0x2b, 0x73, 0xae, 0xf0, 0x85, 0x7d, 0x77, 0x81,
-	        0x1f, 0x35, 0x2c, 0x07, 0x3b, 0x61, 0x08, 0xd7,
-	        0x2d, 0x98, 0x10, 0xa3, 0x09, 0x14, 0xdf, 0xf4
-	    };
+    // Example 256-bit key
+    uint8_t key[AES_KEY_SIZE] = {
+        0x60, 0x3d, 0xeb, 0x10, 0x15, 0xca, 0x71, 0xbe,
+        0x2b, 0x73, 0xae, 0xf0, 0x85, 0x7d, 0x77, 0x81,
+        0x1f, 0x35, 0x2c, 0x07, 0x3b, 0x61, 0x08, 0xd7,
+        0x2d, 0x98, 0x10, 0xa3, 0x09, 0x14, 0xdf, 0xf4
+    };
 
-	    // Example plaintext block (16 bytes)
-	    uint8_t plaintext[AES_BLOCK_SIZE] = {
-	        0x32, 0x43, 0xf6, 0xa8, 0x88, 0x5a, 0x30, 0x8d,
-	        0x31, 0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34
-	    };
+    // Example plaintext (16 bytes)
+    uint8_t plaintext[AES_BLOCK_SIZE] = {
+        0x32, 0x43, 0xf6, 0xa8, 0x88, 0x5a, 0x30, 0x8d,
+        0x31, 0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34
+    };
 
-	    uint8_t ciphertext[AES_BLOCK_SIZE];
-	    uint8_t decryptedtext[AES_BLOCK_SIZE];
+    uint8_t encrypted[AES_BLOCK_SIZE];
+    uint8_t decrypted[AES_BLOCK_SIZE];
 
-	    printf("Original plaintext:\n");
-	    print_hex(plaintext, AES_BLOCK_SIZE);
+    // Initialize AES context with the key
+    AES_Init(&ctx, key);
 
-	    // Initialize AES context with the key
-	    AES_Init(&ctx, key);
+    // Encrypt the plaintext
+    AES_Encrypt(&ctx, plaintext, encrypted);
 
-	    // Encrypt the plaintext
-	    AES_Encrypt(&ctx, plaintext, ciphertext);
+    // Decrypt the ciphertext
+    AES_Decrypt(&ctx, encrypted, decrypted);
 
-	    printf("Ciphertext:\n");
-	    print_hex(ciphertext, AES_BLOCK_SIZE);
+    // Print results
+    printf("Plaintext: \n");
+    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
+        printf("%02x ", plaintext[i]);
+    }
+    printf("\n\nEncrypted: \n");
+    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
+        printf("%02x ", encrypted[i]);
+    }
+    printf("\n\nDecrypted: \n");
+    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
+        printf("%02x ", decrypted[i]);
+    }
+    printf("\n");
 
-	    // Decrypt the ciphertext
-	    AES_Decrypt(&ctx, ciphertext, decryptedtext);
-
-//	    printf("Decrypted plaintext:\n");
-//	    print_hex(decryptedtext, AES_BLOCK_SIZE);
-
-	    // Verify correctness
-
-
-	    return 0;
+//    return 0;
 
 
   /* USER CODE END 1 */
@@ -148,25 +147,25 @@ int main(void)
   /* USER CODE END 2 */
 
   /* Initialize leds */
-  BSP_LED_Init(LED_BLUE);
-  BSP_LED_Init(LED_GREEN);
-  BSP_LED_Init(LED_RED);
-
-  /* Initialize USER push-button, will be used to trigger an interrupt each time it's pressed.*/
-  BSP_PB_Init(BUTTON_SW1, BUTTON_MODE_EXTI);
-  BSP_PB_Init(BUTTON_SW2, BUTTON_MODE_EXTI);
-  BSP_PB_Init(BUTTON_SW3, BUTTON_MODE_EXTI);
-
-  /* Initialize COM1 port (115200, 8 bits (7-bit data + 1 stop bit), no parity */
-  BspCOMInit.BaudRate   = 115200;
-  BspCOMInit.WordLength = COM_WORDLENGTH_8B;
-  BspCOMInit.StopBits   = COM_STOPBITS_1;
-  BspCOMInit.Parity     = COM_PARITY_NONE;
-  BspCOMInit.HwFlowCtl  = COM_HWCONTROL_NONE;
-  if (BSP_COM_Init(COM1, &BspCOMInit) != BSP_ERROR_NONE)
-  {
-    Error_Handler();
-  }
+//  BSP_LED_Init(LED_BLUE);
+//  BSP_LED_Init(LED_GREEN);
+//  BSP_LED_Init(LED_RED);
+//
+//  /* Initialize USER push-button, will be used to trigger an interrupt each time it's pressed.*/
+//  BSP_PB_Init(BUTTON_SW1, BUTTON_MODE_EXTI);
+//  BSP_PB_Init(BUTTON_SW2, BUTTON_MODE_EXTI);
+//  BSP_PB_Init(BUTTON_SW3, BUTTON_MODE_EXTI);
+//
+//  /* Initialize COM1 port (115200, 8 bits (7-bit data + 1 stop bit), no parity */
+//  BspCOMInit.BaudRate   = 115200;
+//  BspCOMInit.WordLength = COM_WORDLENGTH_8B;
+//  BspCOMInit.StopBits   = COM_STOPBITS_1;
+//  BspCOMInit.Parity     = COM_PARITY_NONE;
+//  BspCOMInit.HwFlowCtl  = COM_HWCONTROL_NONE;
+//  if (BSP_COM_Init(COM1, &BspCOMInit) != BSP_ERROR_NONE)
+//  {
+//    Error_Handler();
+//  }
 
   /* Boot CPU2 */
   HAL_PWREx_ReleaseCore(PWR_CORE_CPU2);
@@ -178,6 +177,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+//	  printf("Hello \n");
+
   }
   /* USER CODE END 3 */
 }
@@ -326,3 +327,23 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+
+
+#if defined(__GNUC__)
+int _write(int fd, char * ptr, int len) {
+  HAL_USART_Transmit( & husart2, (uint8_t * ) ptr, len, HAL_MAX_DELAY);
+  return len;
+}
+#elif defined(__ICCARM__)#include "LowLevelIOInterface.h"
+
+size_t __write(int handle,
+  const unsigned char * buffer, size_t size) {
+  HAL_USART_Transmit( & husart2, (uint8_t * ) buffer, size, HAL_MAX_DELAY);
+  return size;
+}
+#elif defined(__CC_ARM)
+int fputc(int ch, FILE * f) {
+  HAL_USART_Transmit( & husart2, (uint8_t * ) & ch, 1, HAL_MAX_DELAY);
+  return ch;
+}
+#endif

@@ -1,0 +1,11 @@
+../Core/Src/aes.c:61:13:KeyExpansion	32	static
+../Core/Src/aes.c:98:13:AddRoundKey	24	static
+../Core/Src/aes.c:104:13:SubBytes	24	static
+../Core/Src/aes.c:110:13:InvSubBytes	24	static
+../Core/Src/aes.c:116:13:ShiftRows	24	static
+../Core/Src/aes.c:142:13:InvShiftRows	24	static
+../Core/Src/aes.c:168:13:MixColumns	32	static
+../Core/Src/aes.c:180:13:InvMixColumns	32	static
+../Core/Src/aes.c:192:6:AES_Init	16	static
+../Core/Src/aes.c:196:6:AES_Encrypt	56	static
+../Core/Src/aes.c:216:6:AES_Decrypt	56	static

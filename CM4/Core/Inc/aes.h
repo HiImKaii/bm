@@ -2,7 +2,6 @@
 #define AES_H
 
 #include <stdint.h>
-#include <stddef.h>
 
 #define AES_BLOCK_SIZE 16  // Khối dữ liệu đầu ra/vào; 16 bytes = 128 bits
 #define AES_KEY_SIZE 32    // Kích thước khoá; 128-bit key
@@ -14,7 +13,7 @@
 
 
 typedef struct {
-    uint8_t RoundKey[176]; // 11 khoá vòng, mỗi khoá 16 bits
+    uint8_t RoundKey[AES_ROUND_KEY_SIZE];
 } AES_Context;
 
 /**
@@ -26,8 +25,5 @@ void AES_Init(AES_Context *ctx, const uint8_t *key);
 void AES_Encrypt(AES_Context *ctx, uint8_t *input, uint8_t *output);
 void AES_Decrypt(AES_Context *ctx, uint8_t *input, uint8_t *output);
 
-
-//void getInputFromKeyboard(uint8_t *buffer, size_t size);
-//void printHex(const uint8_t *data, size_t size);
 
 #endif

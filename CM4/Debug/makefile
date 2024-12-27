@@ -62,8 +62,8 @@ all: main-build
 main-build: bm_CM4.elf secondary-outputs
 
 # Tool invocations
-bm_CM4.elf bm_CM4.map: $(OBJS) $(USER_OBJS) C:\Users\VU\ XUAN\ QUAN\STM32CubeIDE\workspace_1.16.1\bm\CM4\STM32WL55JCIX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "bm_CM4.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\VU XUAN QUAN\STM32CubeIDE\workspace_1.16.1\bm\CM4\STM32WL55JCIX_FLASH.ld" --specs=nosys.specs -Wl,-Map="bm_CM4.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+bm_CM4.elf bm_CM4.map: $(OBJS) $(USER_OBJS) C:\Users\VU\ XUAN\ QUAN\Downloads\bm\bm\CM4\STM32WL55JCIX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "bm_CM4.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\VU XUAN QUAN\Downloads\bm\bm\CM4\STM32WL55JCIX_FLASH.ld" --specs=nosys.specs -Wl,-Map="bm_CM4.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -1,5 +1,5 @@
 Common/System/system_stm32wlxx.o: \
- C:/Users/VU\ XUAN\ QUAN/STM32CubeIDE/workspace_1.16.1/bm/Common/System/system_stm32wlxx.c \
+ C:/Users/VU\ XUAN\ QUAN/Downloads/bm/bm/Common/System/system_stm32wlxx.c \
  C:/Users/VU\ XUAN\ QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/CMSIS/Device/ST/STM32WLxx/Include/stm32wlxx.h \
  C:/Users/VU\ XUAN\ QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/CMSIS/Device/ST/STM32WLxx/Include/stm32wl55xx.h \
  C:/Users/VU\ XUAN\ QUAN/STM32Cube/Repository/STM32Cube_FW_WL_V1.3.0/Drivers/CMSIS/Include/core_cm4.h \
