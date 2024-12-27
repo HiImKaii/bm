@@ -9,3 +9,4 @@
 ../Core/Src/aes.c:192:6:AES_Init	16	static
 ../Core/Src/aes.c:196:6:AES_Encrypt	56	static
 ../Core/Src/aes.c:216:6:AES_Decrypt	56	static
+../Core/Src/aes.c:236:6:print_hex	24	static

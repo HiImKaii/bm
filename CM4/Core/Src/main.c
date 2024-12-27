@@ -22,6 +22,7 @@
 #include "aes.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -76,6 +77,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
     AES_Context ctx;
+    bool is_done = 0;
 
     // Example 256-bit key
     uint8_t key[AES_KEY_SIZE] = {
@@ -104,19 +106,19 @@ int main(void)
     AES_Decrypt(&ctx, encrypted, decrypted);
 
     // Print results
-    printf("Plaintext: \n");
-    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
-        printf("%02x ", plaintext[i]);
-    }
-    printf("\n\nEncrypted: \n");
-    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
-        printf("%02x ", encrypted[i]);
-    }
-    printf("\n\nDecrypted: \n");
-    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
-        printf("%02x ", decrypted[i]);
-    }
-    printf("\n");
+//    printf("Plaintext: \n");
+//    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
+//        printf("%02x ", plaintext[i]);
+//    }
+//    printf("\n\nEncrypted: \n");
+//    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
+//        printf("%02x ", encrypted[i]);
+//    }
+//    printf("\n\nDecrypted: \n");
+//    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
+//        printf("%02x ", decrypted[i]);
+//    }
+//    printf("\n");
 
 //    return 0;
 
@@ -175,10 +177,27 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  HAL_Delay(1000);
 
     /* USER CODE BEGIN 3 */
 //	  printf("Hello \n");
-
+	  if (!is_done)
+	  {
+	    printf("Plaintext: \n");
+	    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
+	        printf("%02x ", plaintext[i]);
+	    }
+	    printf("\n\nEncrypted: \n");
+	    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
+	        printf("%02x ", encrypted[i]);
+	    }
+	    printf("\n\nDecrypted: \n");
+	    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
+	        printf("%02x ", decrypted[i]);
+	    }
+	    printf("\n");
+	    is_done = 1;
+	  }
   }
   /* USER CODE END 3 */
 }
