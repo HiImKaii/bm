@@ -86,13 +86,12 @@ int main(void)
     };
 
     // Example plaintext (16 bytes)
-    uint8_t plaintext[AES_BLOCK_SIZE] = {
-        0x32, 0x43, 0xf6, 0xa8, 0x88, 0x5a, 0x30, 0x8d,
-        0x31, 0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34
-    };
+    const char *inputText = "Hello, World!";
+    uint8_t plaintext[AES_BLOCK_SIZE];
+    convertToAESInput(inputText, plaintext);
 
     uint8_t encrypted[AES_BLOCK_SIZE];
-    uint8_t decrypted[AES_BLOCK_SIZE];
+//    uint8_t decrypted[AES_BLOCK_SIZE];
 
     // Initialize AES context with the key
     AES_Init(&ctx, key);
@@ -101,9 +100,9 @@ int main(void)
     AES_Encrypt(&ctx, plaintext, encrypted);
 
     // Decrypt the ciphertext
-    AES_Decrypt(&ctx, encrypted, decrypted);
-
-    // Print results
+//    AES_Decrypt(&ctx, encrypted, decrypted);
+//
+//    // Print results
 //    printf("Plaintext: \n");
 //    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
 //        printf("%02x ", plaintext[i]);
@@ -175,7 +174,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  HAL_Delay(1000);
 
     /* USER CODE BEGIN 3 */
 //	  printf("Hello \n");
@@ -189,10 +187,10 @@ int main(void)
 	    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
 	        printf("%02x ", encrypted[i]);
 	    }
-	    printf("\n\nDecrypted: \n");
-	    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
-	        printf("%02x ", decrypted[i]);
-	    }
+//	    printf("\n\nDecrypted: \n");
+//	    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
+//	        printf("%02x ", decrypted[i]);
+//	    }
 	    printf("\n");
 	    is_done = 1;
 	  }
@@ -344,7 +342,6 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
-
 
 #if defined(__GNUC__)
 int _write(int fd, char * ptr, int len) {

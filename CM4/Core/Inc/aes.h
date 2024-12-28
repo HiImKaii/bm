@@ -23,7 +23,7 @@ typedef struct {
  */
 void AES_Init(AES_Context *ctx, const uint8_t *key);
 void AES_Encrypt(AES_Context *ctx, uint8_t *input, uint8_t *output);
-void AES_Decrypt(AES_Context *ctx, uint8_t *input, uint8_t *output);
+//void AES_Decrypt(AES_Context *ctx, uint8_t *input, uint8_t *output);
 
 
 #endif
