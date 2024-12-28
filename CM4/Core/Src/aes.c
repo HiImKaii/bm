@@ -245,16 +245,16 @@ void AES_Encrypt(AES_Context *ctx, uint8_t *input, uint8_t *output) {
 //    memcpy(output, state, AES_BLOCK_SIZE);
 //}
 
-void convertToAESInput(const char *text, uint8_t plaintext[AES_BLOCK_SIZE]) {
-    size_t len = strlen(text);
+void convertToAESBlocks(const char *inputText, uint8_t **output, size_t *numBlocks) {
+    size_t textLength = strlen(inputText);
+    *numBlocks = (textLength + AES_BLOCK_SIZE - 1) / AES_BLOCK_SIZE; // Số khối cần thiết
+    *output = (uint8_t *)malloc(*numBlocks * AES_BLOCK_SIZE);        // Cấp phát bộ nhớ
 
-    // Copy up to AES_BLOCK_SIZE characters
-    for (size_t i = 0; i < AES_BLOCK_SIZE; i++) {
-        if (i < len) {
-            plaintext[i] = (uint8_t)text[i];
-        } else {
-            // Padding with 0x00 if text is shorter than AES_BLOCK_SIZE
-            plaintext[i] = 0x00;
+    // Sao chép dữ liệu vào các khối, thêm padding nếu cần
+    for (size_t i = 0; i < *numBlocks; i++) {
+        for (size_t j = 0; j < AES_BLOCK_SIZE; j++) {
+            size_t index = i * AES_BLOCK_SIZE + j;
+            (*output)[i * AES_BLOCK_SIZE + j] = (index < textLength) ? inputText[index] : 0x00;
         }
     }
 }

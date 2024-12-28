@@ -86,19 +86,40 @@ int main(void)
     };
 
     // Example plaintext (16 bytes)
-    const char *inputText = "Hello, World!";
-    uint8_t plaintext[AES_BLOCK_SIZE];
-    convertToAESInput(inputText, plaintext);
+    const char *inputText =
+        "#if defined(__GNUC__)\n"
+        "int _write(int fd, char * ptr, int len) {\n"
+        "  HAL_USART_Transmit( & husart2, (uint8_t * ) ptr, len, HAL_MAX_DELAY);\n"
+        "  return len;\n"
+        "}\n"
+        "#elif defined(__ICCARM__)\n"
+        "#include \"LowLevelIOInterface.h\"\n"
+        "size_t __write(int handle,\n"
+        "  const unsigned char * buffer, size_t size) {\n"
+        "  HAL_USART_Transmit( & husart2, (uint8_t * ) buffer, size, HAL_MAX_DELAY);\n"
+        "  return size;\n"
+        "}\n"
+        "#elif defined(__CC_ARM)\n"
+        "int fputc(int ch, FILE * f) {\n"
+        "  HAL_USART_Transmit( & husart2, (uint8_t * ) & ch, 1, HAL_MAX_DELAY);\n"
+        "  return ch;\n"
+        "}\n"
+        "#endif";
 
-    uint8_t encrypted[AES_BLOCK_SIZE];
+    uint8_t *plaintext;
+    size_t numBlocks = 3;
+    convertToAESBlocks(inputText, &plaintext, &numBlocks);
+    uint8_t encrypted[AES_BLOCK_SIZE * numBlocks];
+
 //    uint8_t decrypted[AES_BLOCK_SIZE];
 
     // Initialize AES context with the key
     AES_Init(&ctx, key);
 
     // Encrypt the plaintext
-    AES_Encrypt(&ctx, plaintext, encrypted);
-
+    for (size_t i = 0; i < numBlocks; i++) {
+        AES_Encrypt(&ctx, &plaintext[i * AES_BLOCK_SIZE], &encrypted[i * AES_BLOCK_SIZE]);
+    }
     // Decrypt the ciphertext
 //    AES_Decrypt(&ctx, encrypted, decrypted);
 //
@@ -177,21 +198,21 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 //	  printf("Hello \n");
-	  if (!is_done)
-	  {
-	    printf("Plaintext: \n");
-	    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
-	        printf("%02x ", plaintext[i]);
-	    }
-	    printf("\n\nEncrypted: \n");
-	    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
-	        printf("%02x ", encrypted[i]);
-	    }
-//	    printf("\n\nDecrypted: \n");
-//	    for (int i = 0; i < AES_BLOCK_SIZE; i++) {
-//	        printf("%02x ", decrypted[i]);
-//	    }
-	    printf("\n");
+	    if (!is_done) {
+	        printf("Plaintext: \n");
+	        for (size_t i = 0; i < numBlocks; i++) {
+	            for (int j = 0; j < AES_BLOCK_SIZE; j++) {
+	                printf("%02x ", plaintext[i * AES_BLOCK_SIZE + j]);
+	            }
+	        }
+	        printf("\n\nEncrypted: \n");
+	        for (size_t i = 0; i < numBlocks; i++) {
+	            for (int j = 0; j < AES_BLOCK_SIZE; j++) {
+	                printf("%02x ", encrypted[i * AES_BLOCK_SIZE + j]);
+	            }
+	        }
+	        printf("\n");
+
 	    is_done = 1;
 	  }
   }

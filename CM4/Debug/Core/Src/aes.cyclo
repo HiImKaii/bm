@@ -5,5 +5,5 @@
 ../Core/Src/aes.c:176:13:MixColumns	2
 ../Core/Src/aes.c:202:6:AES_Init	1
 ../Core/Src/aes.c:207:6:AES_Encrypt	2
-../Core/Src/aes.c:248:6:convertToAESInput	3
+../Core/Src/aes.c:248:6:convertToAESBlocks	4
 ../Core/Src/aes.c:262:6:print_hex	3
